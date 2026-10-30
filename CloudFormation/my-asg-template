@@ -1,0 +1,65 @@
+
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: >
+  CloudFormation template for an AWS Auto Scaling Group
+  using my created EC2 template, multiple subnets,
+  and an Application Load Balancer target group.
+
+Parameters:
+
+  LaunchTemplateId:
+    Type: AWS::EC2::LaunchTemplate::Id
+    Description: Existing EC2 Launch Template ID
+
+  LaunchTemplateVersion:
+    Type: String
+    Description: Version number of the EC2 Launch Template
+
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Subnets where Auto Scaling instances will be launched
+
+  TargetGroupArn:
+    Type: String
+    Description: ARN of the Application Load Balancer target group
+
+
+Resources:
+
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: MyASG
+      MinSize: "1"
+      MaxSize: "6"
+      DesiredCapacity: "1"
+      Cooldown: "300"
+      HealthCheckGracePeriod: 30
+      HealthCheckType: ELB
+
+      VPCZoneIdentifier: !Ref SubnetIds
+
+      LaunchTemplate:
+        LaunchTemplateId: !Ref LaunchTemplateId
+        Version: !Ref LaunchTemplateVersion
+
+      TargetGroupARNs:
+        - !Ref TargetGroupArn
+
+      NewInstancesProtectedFromScaleIn: false
+
+      TerminationPolicies:
+        - Default
+
+      Tags:
+        - Key: Name
+          Value: MyASG-Instance
+          PropagateAtLaunch: true
+
+
+Outputs:
+
+  AutoScalingGroupName:
+    Description: Name of the Auto Scaling Group
+    Value: !Ref AutoScalingGroup
