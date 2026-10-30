@@ -12,8 +12,8 @@ This template is ideal for:
 
 ## Architecture
 The architecture uses an Application Load Balancer to distribute incoming traffic to EC2 instances managed by an Auto Scaling Group across multiple Availability Zones.
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/c5148ec4-fa10-42b8-bd04-3857ed73c5a2" />
-
+  <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/b01a5ab9-1003-4315-9da1-c1848cd61322" />
+  
 ## Features
 - Auto Scaling Group with configurable size
 - Multi‑AZ deployment using a list of subnet IDs
